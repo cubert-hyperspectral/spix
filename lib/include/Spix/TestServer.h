@@ -52,6 +52,12 @@ public:
     void mouseClick(ItemPath path, Point proportion, Point offset);
     void mouseBeginDrag(ItemPath path);
     void mouseEndDrag(ItemPath path);
+    void mouseBeginDrag(ItemPath path, Point proportion);
+    void mouseEndDrag(ItemPath path, Point proportion);
+    void mouseBeginDrag(ItemPath path, Point proportion, Point offset);
+    void mouseEndDrag(ItemPath path, Point proportion, Point offset);
+    void mouseMove(ItemPath path, Point proportion);
+    void mouseMove(ItemPath path, Point proportion, Point offset);
     void mouseDropUrls(ItemPath path, const std::vector<std::string>& urls);
     void genericCommand(std::string command, std::string payload);
 

@@ -63,6 +63,57 @@ AnyRpcServer::AnyRpcServer(int anyrpcPort)
         "End a drag with the mouse | mouseEndDrag(string path)",
         [this](std::string path) { mouseEndDrag(std::move(path)); });
 
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseBeginDragWithProportion",
+        "Begin a drag with the mouse on the object at the given path with the given proportion (In percent)"
+        "| mouseBeginDragWithProportion(string path, float proportionX, float proportionY)",
+        [this](std::string path, double proportionX, double proportionY) {
+            auto proportion = Point(proportionX, proportionY);
+            mouseBeginDrag(std::move(path), proportion);
+        });
+
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseEndDragWithProportion",
+        "End a drag with the mouse on the object at the given path with the given proportion (In percent)"
+        "| mouseEndDragWithProportion(string path, float proportionX, float proportionY)",
+        [this](std::string path, double proportionX, double proportionY) {
+            auto proportion = Point(proportionX, proportionY);
+            mouseEndDrag(std::move(path), proportion);
+        });
+
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseBeginDragWithOffset",
+        "Begin a drag with the mouse on the object at the given path with the given offset (In pixel)"
+        "| mouseBeginDragWithOffset(string path, float offsetX, float offsetY)",
+        [this](std::string path, double offsetX, double offsetY) {
+            auto proportion = Point(0, 0);
+            auto offset = Point(offsetX, offsetY);
+            mouseBeginDrag(std::move(path), proportion, offset);
+        });
+
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseEndDragWithOffset",
+        "End a drag with the mouse on the object at the given path with the given offset (In pixel)"
+        "| mouseEndDragWithOffset(string path, float offsetX, float offsetY)",
+        [this](std::string path, double offsetX, double offsetY) {
+            auto proportion = Point(0, 0);
+            auto offset = Point(offsetX, offsetY);
+            mouseEndDrag(std::move(path), proportion, offset);
+        });
+
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseMoveProportional",
+        "Move the mouse on the object at the given path with the given proportion (In percent)"
+        "| mouseMoveProportional(string path, float proportionX, float proportionY)",
+        [this](std::string path, double proportionX, double proportionY) {
+            auto proportion = Point(proportionX, proportionY);
+            mouseMove(std::move(path), proportion);
+        });
+    
+    utils::AddFunctionToAnyRpc<void(std::string, double, double)>(methodManager, "mouseMoveAbsolute",
+        "Move the mouse on the object at the given path with the given offset (In pixel)"
+        "| mouseMoveAbsolute(string path, float float offsetX, float offsetY)",
+        [this](std::string path, double offsetX, double offsetY) {
+            auto proportion = Point(0, 0);
+            auto offset = Point(offsetX, offsetY);
+            mouseMove(std::move(path), proportion, offset);
+        });
+
     utils::AddFunctionToAnyRpc<void(std::string, std::vector<std::string>)>(methodManager, "mouseDropUrls",
         "Drop Urls with mouse | mouseDropUrls(string path, [string url1, ...])",
         [this](std::string path, std::vector<std::string> urls) { mouseDropUrls(std::move(path), urls); });

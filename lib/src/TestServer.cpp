@@ -20,6 +20,7 @@
 #include <Commands/GetTestStatus.h>
 #include <Commands/InputText.h>
 #include <Commands/InvokeMethod.h>
+#include <Commands/MouseAction.h>
 #include <Commands/Quit.h>
 #include <Commands/Screenshot.h>
 #include <Commands/ScreenshotBase64.h>
@@ -95,6 +96,55 @@ void TestServer::mouseBeginDrag(ItemPath path)
 void TestServer::mouseEndDrag(ItemPath path)
 {
     m_cmdExec->enqueueCommand<cmd::DragEnd>(path);
+}
+
+void TestServer::mouseBeginDrag(ItemPath path, Point proportion)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion);
+    // Task with None, None, {x, y} -> Move mouse to x, y relative to the item position
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::Left, spix::MouseButtonActions::Down, {0, 0}},
+        {spix::MouseButtons::None, spix::MouseButtonActions::None, {0, 0}}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
+}
+
+void TestServer::mouseEndDrag(ItemPath path, Point proportion)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion);
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::None, spix::MouseButtonActions::None, {0, 0}}, {
+        spix::MouseButtons::Left, spix::MouseButtonActions::Up, {0, 0}}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
+}
+
+void TestServer::mouseBeginDrag(ItemPath path, Point proportion, Point offset)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion);
+    // Task with None, None, {x, y} -> Move mouse to x, y relative to the item position
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::Left, spix::MouseButtonActions::Down, offset},{spix::MouseButtons::None, spix::MouseButtonActions::None, offset}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
+}
+
+void TestServer::mouseEndDrag(ItemPath path, Point proportion, Point offset)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion);
+    // Task with None, None, {x, y} -> Move mouse to x, y relative to the item position
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::None, spix::MouseButtonActions::None, offset}, {spix::MouseButtons::Left, spix::MouseButtonActions::Up, offset}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
+}
+
+void TestServer::mouseMove(ItemPath path, Point proportion)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion);
+    // Task with None, None, {x, y} -> Move mouse to x, y relative to the item position
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::None, spix::MouseButtonActions::None, {0, 0}}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
+}
+
+void TestServer::mouseMove(ItemPath path, Point proportion, Point offset)
+{
+    auto pathWithProportion = ItemPosition(path.string(), proportion, offset);
+    // Task with None, None, {x, y} -> Move mouse to x, y relative to the item position
+    std::vector<MouseTask> tasks = {{spix::MouseButtons::None, spix::MouseButtonActions::None, {0, 0}}};
+    m_cmdExec->enqueueCommand<cmd::MouseAction>(pathWithProportion, std::move(tasks));
 }
 
 void TestServer::mouseDropUrls(ItemPath path, const std::vector<std::string>& urls)

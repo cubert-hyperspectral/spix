@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <Spix/Data/Geometry.h>
+
 namespace spix {
 
 struct KeyCodes {
@@ -164,6 +166,21 @@ struct MouseButtons {
         Right = 1 << 1,
         Middle = 1 << 2
     };
+};
+
+using MouseButtonAction = unsigned;
+struct MouseButtonActions {
+    enum : MouseButtonAction {
+        None = 0,
+        Up = 1,
+        Down = 2
+    };
+};
+
+struct MouseTask {
+    MouseButton button;
+    MouseButtonAction action;
+    spix::Point position;
 };
 
 } // namespace spix
